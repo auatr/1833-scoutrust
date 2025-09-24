@@ -1,16 +1,16 @@
 use dioxus::prelude::*;
 
-use crate::config::data::{self, GLOBAL_DATA};
+use crate::config::data::{initialize_match, GLOBAL_DATA};
 use serde_json::Value;
 
 #[component]
 pub fn Prematch() -> Element {
-    let mut off_data = use_signal(|| data::initialize_data());
+    let mut off_match = use_signal(|| initialize_match());
     
-    let offdata_init = off_data.read().clone();
+    let offmatch_init = off_match.read().clone();
     
-    let mut team_number = use_signal(|| offdata_init.get("prematch", "Match Info", "team_number").clone().unwrap_or_default().to_string());
-    let mut match_number = use_signal(|| offdata_init.get("prematch", "Match Info", "match_number").unwrap_or_default().clone().to_string());
+    let mut team_number = use_signal(|| offmatch_init.prematch.team_number);
+    let mut match_number = use_signal(|| offmatch_init.prematch.match_number);
 
     rsx! {
         div { class: "container",
@@ -24,10 +24,10 @@ pub fn Prematch() -> Element {
                         value: "{team_number.read()}",
                         placeholder: "Team Number",
                         oninput: move |evt| {
-                            let mut new_data = off_data();
-                            new_data.add("prematch", "Match ID", "TN", Value::String(evt.value().clone()));
-                            off_data.set(new_data);
-                            team_number.set(evt.value().clone());
+                            let mut new_data = off_match();
+                            new_data.prematch.team_number = evt.value().clone().parse().unwrap();
+                            off_match.set(new_data);
+                            team_number.set(evt.value().clone().parse().unwrap_or_default());
                         },
                         r#type: "number"
                     }
@@ -42,35 +42,23 @@ pub fn Prematch() -> Element {
                         value: "{match_number.read()}",
                         placeholder: "Match Number",
                         oninput: move |evt| {
-                            let mut new_data = off_data();
-                            new_data.add("prematch", "Match Info", "match_number", Value::String(evt.value().clone()));
-                            off_data.set(new_data);
-                            match_number.set(evt.value().clone());
+                            let mut new_data = off_match();
+                            new_data.prematch.match_number = evt.value().clone().parse().unwrap_or_default();
+                            off_match.set(new_data);
+                            match_number.set(evt.value().clone().parse().unwrap_or_default());
                         },
                         r#type: "number"
                     }
                 }
             }
 
-            if !team_number.read().is_empty() && !match_number.read().is_empty() {
+            if team_number.read().clone() != 9999 && match_number.read().clone() != 0 {
                 div { class: "button-container",
                     button {
                         class: "subtitle-block",
                         onclick: move |_| {
-                            let current_data = off_data();
-
-                            GLOBAL_DATA.lock().unwrap().add(
-                                "prematch",
-                                "Match Info",
-                                "team_number",
-                                Value::String(current_data.get("prematch", "Match Info", "team_number").unwrap_or_default().to_string()),
-                            );
-                            GLOBAL_DATA.lock().unwrap().add(
-                                "prematch",
-                                "Match Info",
-                                "match_number",
-                                Value::String(current_data.get("prematch", "Match Info", "match_number").unwrap_or_default().to_string()),
-                            );
+                            GLOBAL_DATA.lock().unwrap().prematch.team_number = team_number.read().clone();
+                            GLOBAL_DATA.lock().unwrap().prematch.match_number = match_number.read().clone();
                         },
                         "Submit Data"
                     }
