@@ -1,13 +1,14 @@
 use dioxus::prelude::*;
+use no_panic::no_panic;
 
 use crate::config::data::{initialize_match, GLOBAL_DATA};
-use serde_json::Value;
 
 #[component]
+#[no_panic]
 pub fn Prematch() -> Element {
     let mut off_match = use_signal(|| initialize_match());
     
-    let offmatch_init = off_match.read().clone();
+    let offmatch_init = off_match().clone();
     
     let mut team_number = use_signal(|| offmatch_init.prematch.team_number);
     let mut match_number = use_signal(|| offmatch_init.prematch.match_number);
@@ -21,7 +22,7 @@ pub fn Prematch() -> Element {
                     }
                     input {
                         class: "input",
-                        value: "{team_number.read()}",
+                        value: "{team_number()}",
                         placeholder: "Team Number",
                         oninput: move |evt| {
                             let mut new_data = off_match();
@@ -39,7 +40,7 @@ pub fn Prematch() -> Element {
                     }
                     input {
                         class: "input",
-                        value: "{match_number.read()}",
+                        value: "{match_number()}",
                         placeholder: "Match Number",
                         oninput: move |evt| {
                             let mut new_data = off_match();
