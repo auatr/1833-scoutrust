@@ -9,8 +9,8 @@ pub fn Prematch() -> Element {
     
     let offdata_init = off_data.read().clone();
     
-    let mut team_number = use_signal(|| offdata_init.get("prematch", "Match ID", "TN").clone().unwrap_or_default().to_string());
-    let mut match_number = use_signal(|| offdata_init.get("prematch", "Match ID", "TN").unwrap_or_default().clone().to_string());
+    let mut team_number = use_signal(|| offdata_init.get("prematch", "Match Info", "team_number").clone().unwrap_or_default().to_string());
+    let mut match_number = use_signal(|| offdata_init.get("prematch", "Match Info", "match_number").unwrap_or_default().clone().to_string());
 
     rsx! {
         div { class: "container",
@@ -21,7 +21,7 @@ pub fn Prematch() -> Element {
                     }
                     input {
                         class: "input",
-                        value: "{team_number}",
+                        value: "{team_number.read()}",
                         placeholder: "Team Number",
                         oninput: move |evt| {
                             let mut new_data = off_data();
@@ -39,11 +39,11 @@ pub fn Prematch() -> Element {
                     }
                     input {
                         class: "input",
-                        value: "{match_number}",
+                        value: "{match_number.read()}",
                         placeholder: "Match Number",
                         oninput: move |evt| {
                             let mut new_data = off_data();
-                            new_data.add("prematch", "Match ID", "MN", Value::String(evt.value().clone()));
+                            new_data.add("prematch", "Match Info", "match_number", Value::String(evt.value().clone()));
                             off_data.set(new_data);
                             match_number.set(evt.value().clone());
                         },
@@ -63,13 +63,13 @@ pub fn Prematch() -> Element {
                                 "prematch",
                                 "Match Info",
                                 "team_number",
-                                Value::String(current_data.get("prematch", "Match ID", "TN").unwrap_or_default().to_string()),
+                                Value::String(current_data.get("prematch", "Match Info", "team_number").unwrap_or_default().to_string()),
                             );
                             GLOBAL_DATA.lock().unwrap().add(
                                 "prematch",
                                 "Match Info",
                                 "match_number",
-                                Value::String(current_data.get("prematch", "Match ID", "TN").unwrap_or_default().to_string()),
+                                Value::String(current_data.get("prematch", "Match Info", "match_number").unwrap_or_default().to_string()),
                             );
                         },
                         "Submit Data"

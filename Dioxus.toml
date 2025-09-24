@@ -9,7 +9,7 @@ title = "scoutrust"
 [web.resource]
 
 # Additional CSS style files
-style = []
+style = [ "./assets/pre.css" ]
 
 # Additional JavaScript files
 script = []
