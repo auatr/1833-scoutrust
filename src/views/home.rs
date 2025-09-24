@@ -1,11 +1,23 @@
-use crate::components::{Echo, Hero};
 use dioxus::prelude::*;
 
-/// The Home page component that will be rendered when the current route is `[Route::Home]`
+const HOME_CSS: Asset = asset!("/assets/styling/home.css");
+
 #[component]
 pub fn Home() -> Element {
     rsx! {
-        Hero {}
-        Echo {}
+        document::Link { rel: "stylesheet", href: HOME_CSS }
+
+        div { class: "container",
+            div { class: "sub-container",
+                Link { class: "button", to: "/pages/pre",
+                    "START SCOUTING"
+                }
+            }
+            div { class: "sub-container",
+                Link { class: "button", to: "/pages/prevmatches", // doesn't exist yet
+                    "See Previous Matches"
+                }
+            }
+        }
     }
 }
