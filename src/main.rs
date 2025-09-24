@@ -1,7 +1,9 @@
 use dioxus::prelude::*;
+
 use views::{Home, Prematch};
 
 mod components;
+mod config;
 mod views;
 
 #[derive(Debug, Clone, Routable, PartialEq)]
@@ -13,7 +15,6 @@ enum Route {
     #[route("/pages/pre")]
     Prematch,
 }
-
 
 const FAVICON: Asset = asset!("/assets/images/BEAN.png");
 const MAIN_CSS: Asset = asset!("/assets/styling/main.css");

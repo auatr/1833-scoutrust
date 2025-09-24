@@ -1,7 +1,8 @@
 use dioxus::prelude::*;
 
+use crate::config::data::GLOBAL_DATA;
+use serde_json::Value;
 
-// temporary. Data handling later
 #[derive(Clone, Default)]
 struct OffGameData {
     team_number: String,
@@ -54,9 +55,33 @@ pub fn Prematch() -> Element {
             }
 
             if !team_number.is_empty() && !match_number.is_empty() {
-                a { class: "subtitle-block",
-                    href: "/pages/auton", // doesn't exist yet
-                    p { class: "subtitle-block-text", "START" }
+                div { class: "button-container",
+                    button {
+                        class: "subtitle-block",
+                        onclick: move |_| {
+                            let current_data = off_game_data();
+
+                            GLOBAL_DATA.lock().unwrap().add(
+                                "prematch",
+                                "Match Info",
+                                "team_number",
+                                Value::String(current_data.team_number.clone()),
+                            );
+                            GLOBAL_DATA.lock().unwrap().add(
+                                "prematch",
+                                "Match Info",
+                                "match_number",
+                                Value::String(current_data.match_number.clone()),
+                            );
+                        },
+                        "Submit Data"
+                    }
+
+                    Link {
+                        class: "subtitle-block",
+                        to: "/pages/auton",
+                        "Auton"
+                    }
                 }
             }
         }
