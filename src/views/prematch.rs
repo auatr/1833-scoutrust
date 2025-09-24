@@ -9,8 +9,8 @@ pub fn Prematch() -> Element {
     
     let offdata_init = off_data.read().clone();
     
-    let mut team_number = use_signal(|| offdata_init.get("prematch", "Match ID", "TN").unwrap().clone().to_string());
-    let mut match_number = use_signal(|| offdata_init.get("prematch", "Match ID", "TN").unwrap().clone().to_string());
+    let mut team_number = use_signal(|| offdata_init.get("prematch", "Match ID", "TN").clone().unwrap_or_default().to_string());
+    let mut match_number = use_signal(|| offdata_init.get("prematch", "Match ID", "TN").unwrap_or_default().clone().to_string());
 
     rsx! {
         div { class: "container",
@@ -63,13 +63,13 @@ pub fn Prematch() -> Element {
                                 "prematch",
                                 "Match Info",
                                 "team_number",
-                                Value::String(current_data.get("prematch", "Match ID", "TN").unwrap().to_string()),
+                                Value::String(current_data.get("prematch", "Match ID", "TN").unwrap_or_default().to_string()),
                             );
                             GLOBAL_DATA.lock().unwrap().add(
                                 "prematch",
                                 "Match Info",
                                 "match_number",
-                                Value::String(current_data.get("prematch", "Match ID", "TN").unwrap().to_string()),
+                                Value::String(current_data.get("prematch", "Match ID", "TN").unwrap_or_default().to_string()),
                             );
                         },
                         "Submit Data"
