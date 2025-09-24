@@ -7,10 +7,10 @@ use serde_json::Value;
 pub fn Prematch() -> Element {
     let mut off_data = use_signal(|| data::initialize_data());
     
-    let off_data_read = off_data.read(); // Need to make sure this and below values are updated on input
+    let offdata_init = off_data.read().clone();
     
-    let team_number = off_data_read.get("prematch", "Match ID", "TN").unwrap();
-    let match_number = off_data_read.get("prematch", "Match ID", "MN").unwrap();
+    let mut team_number = use_signal(|| offdata_init.get("prematch", "Match ID", "TN").unwrap().clone().to_string());
+    let mut match_number = use_signal(|| offdata_init.get("prematch", "Match ID", "TN").unwrap().clone().to_string());
 
     rsx! {
         div { class: "container",
@@ -27,6 +27,7 @@ pub fn Prematch() -> Element {
                             let mut new_data = off_data();
                             new_data.add("prematch", "Match ID", "TN", Value::String(evt.value().clone()));
                             off_data.set(new_data);
+                            team_number.set(evt.value().clone());
                         },
                         r#type: "number"
                     }
@@ -44,13 +45,14 @@ pub fn Prematch() -> Element {
                             let mut new_data = off_data();
                             new_data.add("prematch", "Match ID", "MN", Value::String(evt.value().clone()));
                             off_data.set(new_data);
+                            match_number.set(evt.value().clone());
                         },
                         r#type: "number"
                     }
                 }
             }
 
-            if !team_number.to_string().is_empty() && !match_number.to_string().is_empty() {
+            if !team_number.read().is_empty() && !match_number.read().is_empty() {
                 div { class: "button-container",
                     button {
                         class: "subtitle-block",
