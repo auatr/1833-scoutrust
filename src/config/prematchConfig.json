@@ -1,7 +1,0 @@
-[
-  {
-    "title": "Match Info",
-    "type": "string",
-    "items": ["team_number", "match_number"]
-  }
-]

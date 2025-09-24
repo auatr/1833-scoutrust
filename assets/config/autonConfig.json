@@ -1,0 +1,29 @@
+[
+  {
+    "title": "Taxi",
+    "type": "Boolean",
+    "items": [
+      { "title": "Yes", "key": "1" },
+      { "title": "No", "key": "1" }
+    ]
+  },
+  {
+    "title": "Coral",
+    "type": "Integer",
+    "items": [
+      { "title": "L1", "key": "L1" },
+      { "title": "L2", "key": "L2" },
+      { "title": "L3", "key": "L3" },
+      { "title": "L4", "key": "L4" }
+    ]
+  },
+  {
+    "title": "Algae",
+    "type": "Integer",
+    "items": [
+      { "title": "Net", "key": "Net" },
+      { "title": "Proc", "key": "Proc" },
+      { "title": "Reef", "key": "Reef" }
+    ]
+  }
+]

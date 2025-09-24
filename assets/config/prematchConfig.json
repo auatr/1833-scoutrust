@@ -1,0 +1,10 @@
+[
+  {
+    "title": "Match Info",
+    "type": "String",
+    "items": [
+      { "title": "Team Number", "key": "TN" },
+      { "title": "Match Number", "key": "MN" }
+    ]
+  }
+]

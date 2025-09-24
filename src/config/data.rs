@@ -1,4 +1,5 @@
 use once_cell::sync::Lazy;
+use serde::de::DeserializeOwned;
 use serde::Deserialize;
 use serde_json::{Number, Value};
 use std::sync::Mutex;
@@ -114,18 +115,25 @@ impl Data {
     }
 }
 
-pub fn load_config(file_path: &str) -> Vec<ConfigEntry> {
-    let raw = fs::read_to_string(file_path).expect("Failed to read config file");
-    serde_json::from_str(&raw).expect("Failed to parse JSON config")
+pub fn load_config<T: DeserializeOwned>(file_name: &str) -> T {
+    let raw = match file_name {
+        "prematchConfig.json" => include_str!("../../assets/config/prematchConfig.json"),
+        "autonConfig.json" => include_str!("../../assets/config/autonConfig.json"),
+        "teleopConfig.json" => include_str!("../../assets/config/teleopConfig.json"),
+        "postmatchConfig.json" => include_str!("../../assets/config/postmatchConfig.json"),
+        _ => panic!("Unknown config file: {}", file_name),
+    };
+
+    serde_json::from_str(raw).unwrap_or_else(|_| panic!("Failed to parse JSON in {}", file_name))
 }
 
 pub fn initialize_data() -> Data {
     let mut data = Data::new();
 
-    let prematch_config = load_config("src/config/prematchConfig.json");
-    let auton_config = load_config("src/config/autonConfig.json");
-    let teleop_config = load_config("src/config/teleopConfig.json");
-    let postmatch_config = load_config("src/config/postmatchConfig.json");
+    let prematch_config = load_config::<Vec<ConfigEntry>>("prematchConfig.json");
+    let auton_config = load_config::<Vec<ConfigEntry>>("autonConfig.json");
+    let teleop_config = load_config::<Vec<ConfigEntry>>("teleopConfig.json");
+    let postmatch_config = load_config::<Vec<ConfigEntry>>("postmatchConfig.json");
 
     data.initialize(&prematch_config, "prematch");
     data.initialize(&auton_config, "auton");
