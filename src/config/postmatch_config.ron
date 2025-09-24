@@ -1,5 +1,7 @@
 Postmatch(
-    encountered_defense: false,
-    played_defense: false,
-    incap: false,
+    checks: {
+        "Encountered Defense": false, 
+        "Played Defense": false,
+        "Incapacitated": false
+    }
 )

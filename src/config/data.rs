@@ -1,139 +1,82 @@
 use once_cell::sync::Lazy;
-use serde::Deserialize;
-use serde_json::{Number, Value};
+use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
 use std::{collections::HashMap, fs};
+use ron::{Deserializer, Value};
 
-#[derive(Debug, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ConfigEntry {
-    title: String,
-    #[serde(rename = "type")]
-    entry_type: String,
-    items: Vec<String>,
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Prematch {
+    team_number: i32,
+    match_number: i32 
 }
 
-#[derive(Debug, Clone)]
-pub struct Data {
-    prematch: HashMap<String, HashMap<String, Value>>,
-    auton: HashMap<String, HashMap<String, Value>>,
-    teleop: HashMap<String, HashMap<String, Value>>,
-    postmatch: HashMap<String, HashMap<String, Value>>,
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Auton {
+    required: HashMap<String, Value>,
+    pieces: HashMap<String, HashMap<String, i32>>
 }
 
-impl Data {
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Teleop {
+    pieces: HashMap<String, HashMap<String, i32>>,
+    endgame: HashMap<String, HashMap<String, Value>>
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Postmatch {
+    checks: HashMap<String, bool> 
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Match {
+    prematch: Prematch,
+    auton: Auton,
+    teleop: Teleop,
+    postmatch: Postmatch,
+}
+
+impl Prematch {
+    fn new() -> Self {
+        Self { team_number: 0, match_number: 9999 }
+    }
+}
+
+impl Auton {
+    fn new() -> Self {
+        Self { required: HashMap::new(), pieces: HashMap::new() }
+    }
+}
+
+impl Teleop {
+    fn new() -> Self {
+        Self { pieces: HashMap::new(), endgame: HashMap::new() }
+    }
+}
+
+impl Postmatch {
+    fn new() -> Self{
+        Self { checks: HashMap::new() }
+    }
+}
+
+impl Match {
     fn new() -> Self {
         Self {
-            prematch: HashMap::new(),
-            auton: HashMap::new(),
-            teleop: HashMap::new(),
-            postmatch: HashMap::new(),
-        }
-    }
-
-    fn initialize(&mut self, config: &[ConfigEntry], phase: &str) {
-        let phase_map = self.get_phase_data_mut(phase);
-        for entry in config {
-            let mut entry_map = HashMap::new();
-            for item in &entry.items {
-                let value = match entry.entry_type.to_lowercase().as_str() {
-                    "number" | "integer" => Value::Number(Number::from(0)),
-                    "boolean" => Value::Bool(false),
-                    "string" | "input" => Value::String(String::new()),
-                    _ => Value::Null,
-                };
-                entry_map.insert(item.clone(), value);
-            }
-            phase_map.insert(entry.title.clone(), entry_map);
-        }
-    }
-
-    pub fn add(&mut self, phase: &str, title: &str, item: &str, value: Value) {
-        let phase_map = self.get_phase_data_mut(phase);
-        if let Some(entry_map) = phase_map.get_mut(title) {
-            entry_map.insert(item.to_string(), value);
-        } else {
-            panic!("Title '{}' not found in phase '{}'", title, phase);
-        }
-    }
-
-    pub fn remove(&mut self, phase: &str, title: &str, item: &str) {
-        let phase_map = self.get_phase_data_mut(phase);
-        if let Some(entry_map) = phase_map.get_mut(title) {
-            entry_map.remove(item);
-        } else {
-            panic!("Title '{}' not found in phase '{}'", title, phase);
-        }
-    }
-
-    pub fn get(&self, phase: &str, title: &str, item: &str) -> Option<&Value> {
-        let phase_map = self.get_phase_data(phase)?;
-        phase_map
-            .get(title)
-            .and_then(|entry_map| entry_map.get(item))
-    }
-
-    pub fn reset(&mut self) {
-        for phase_map in [
-            &mut self.prematch,
-            &mut self.auton,
-            &mut self.teleop,
-            &mut self.postmatch,
-        ] {
-            for entry_map in phase_map.values_mut() {
-                for value in entry_map.values_mut() {
-                    *value = match value {
-                        Value::Number(_) => Value::Number(Number::from(0)),
-                        Value::Bool(_) => Value::Bool(false),
-                        Value::String(_) => Value::String(String::new()),
-                        _ => Value::Null,
-                    };
-                }
-            }
-        }
-    }
-
-    fn get_phase_data(&self, phase: &str) -> Option<&HashMap<String, HashMap<String, Value>>> {
-        match phase {
-            "prematch" => Some(&self.prematch),
-            "auton" => Some(&self.auton),
-            "teleop" => Some(&self.teleop),
-            "postmatch" => Some(&self.postmatch),
-            _ => None,
-        }
-    }
-
-    fn get_phase_data_mut(&mut self, phase: &str) -> &mut HashMap<String, HashMap<String, Value>> {
-        match phase {
-            "prematch" => &mut self.prematch,
-            "auton" => &mut self.auton,
-            "teleop" => &mut self.teleop,
-            "postmatch" => &mut self.postmatch,
-            _ => panic!("Unknown phase '{}'", phase),
+            prematch: Prematch::new(),
+            auton: Auton::new(),
+            teleop: Teleop::new(),
+            postmatch: Postmatch::new(),
         }
     }
 }
 
-pub fn load_config(file_path: &str) -> Vec<ConfigEntry> {
-    let raw = fs::read_to_string(file_path).expect("Failed to read config file");
-    serde_json::from_str(&raw).expect("Failed to parse JSON config")
-}
-
-pub fn initialize_data() -> Data {
-    let mut data = Data::new();
-
-    let prematch_config = load_config("src/config/prematchConfig.json");
-    let auton_config = load_config("src/config/autonConfig.json");
-    let teleop_config = load_config("src/config/teleopConfig.json");
-    let postmatch_config = load_config("src/config/postmatchConfig.json");
-
-    data.initialize(&prematch_config, "prematch");
-    data.initialize(&auton_config, "auton");
-    data.initialize(&teleop_config, "teleop");
-    data.initialize(&postmatch_config, "postmatch");
-
-    data
+pub fn initialize_match() -> Match {
+    let auton: Auton = ron::from_str(&fs::read_to_string("./auton_config.ron").expect("Failed to read auton_config")).unwrap();
+    let teleop: Teleop = ron::from_str(&fs::read_to_string("./teleop_config.ron").expect("Failed to read teleop_config")).unwrap();
+    let postmatch: Postmatch = ron::from_str(&fs::read_to_string("./postmatch_config.ron").expect("Failed to read postmatch")).unwrap();
+    
+    Match { prematch: Prematch::new(), auton: auton, teleop: teleop, postmatch: postmatch }
 }
 
 // Global shared data
-pub static GLOBAL_DATA: Lazy<Mutex<Data>> = Lazy::new(|| Mutex::new(initialize_data()));
+pub static GLOBAL_DATA: Lazy<Mutex<Match>> = Lazy::new(|| Mutex::new(initialize_match()));

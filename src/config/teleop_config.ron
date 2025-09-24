@@ -1,22 +1,24 @@
 Teleop(
-    coral: {
-        l1: 0,
-        l2: 0,
-        l3: 0,
-        l4: 0,
+    pieces: {
+        "Coral": {
+            "L1": 0,
+            "L2": 0,
+            "L3": 0,
+            "L4": 0
+        },
+        "Algae": {
+            "Net": 0,
+            "Proc": 0,
+            "Reef": 0,
+        }
     },
-    algae: {
-        net: 0,
-        proc: 0,
-        reef: 0,
-    }
-    endgame: {
-        climb: {
-            park: false,
-            fail: false,
-            shallow: false,
-            deep: false   
-            start: 0
+    endgame: { // Make sure data takes into account category -> values
+        "Climb": {
+            "Park": false,
+            "Fail": false,
+            "Shallow": false,
+            "Deep": false   
+            "Start": 0
         }
     }
 )

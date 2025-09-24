@@ -1,16 +1,18 @@
 Auton(
     required: {
-        Park: false, // Using default values for now to avoid needing Option 
-    }
-    coral: {
-        l1: 0,
-        l2: 0,
-        l3: 0,
-        l4: 0
-    }
-    algae: {
-        net: 0,
-        proc: 0,
-        reef: 0
-    }
+        "Taxi": false
+    },
+    pieces: {
+        "Coral": {
+            "L1": 0, 
+            "L2": 0, 
+            "L3": 0,
+            "L4": 0
+        },
+        "Algae": {
+            "Net": 0,
+            "Proc": 0,
+            "Barge": 0 
+        }
+    },
 )
