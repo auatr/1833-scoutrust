@@ -1,4 +1,5 @@
-use crate::{components::Counter, config::data::GLOBAL_DATA};
+use crate::components::Counter;
+use crate::config::data::{self, GLOBAL_DATA};
 use dioxus::prelude::*;
 use serde_json::{Number, Value};
 
@@ -15,7 +16,6 @@ pub fn Teleop() -> Element {
         div { class: "container",
             div { class: "header",
                 p { class: "title", "Teleop Scouting" }
-                p { class: "subtitle", "Record teleoperated period data here" }
             }
 
             if teleop_data.is_empty() {
@@ -51,10 +51,14 @@ pub fn Teleop() -> Element {
                                     data.add("teleop", category, item, Value::Number(Number::from(count)));
                                 }
                             }
+                        });
 
-                            // GLOBAL_DATA.with(|data| {
-                            //     data.print_phase("teleop");
-                            // });
+                        GLOBAL_DATA.with(|data| {
+                            data.print_phase("prematch");
+                        });
+
+                        GLOBAL_DATA.with(|data| {
+                            data.print_phase("teleop");
                         });
                     },
                     "Submit Teleop Data"
