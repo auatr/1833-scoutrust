@@ -4,3 +4,4 @@ pub mod auton;
 
 pub use home::Home;
 pub use prematch::Prematch;
+pub use auton::Auton;
