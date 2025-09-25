@@ -1,10 +1,8 @@
-use dioxus::signals::{Global, GlobalSignal, Signal};
-use once_cell::sync::Lazy;
+use dioxus::signals::{GlobalSignal, Signal};
 use serde::de::DeserializeOwned;
 use serde::Deserialize;
 use serde_json::{Number, Value};
-use std::sync::Mutex;
-use std::{collections::HashMap, fs};
+use std::collections::HashMap;
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
