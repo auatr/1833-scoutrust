@@ -1,3 +1,4 @@
+use dioxus::signals::{Global, GlobalSignal, Signal};
 use once_cell::sync::Lazy;
 use serde::de::DeserializeOwned;
 use serde::Deserialize;
@@ -166,4 +167,4 @@ pub fn initialize_data() -> Data {
 }
 
 // Global shared data
-pub static GLOBAL_DATA: Lazy<Mutex<Data>> = Lazy::new(|| Mutex::new(initialize_data()));
+pub static GLOBAL_DATA: GlobalSignal<Data> = Signal::global(|| initialize_data());
