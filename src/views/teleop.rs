@@ -17,62 +17,66 @@ pub fn Teleop() -> Element {
         document::Link { rel: "stylesheet", href: TELEOP_CSS }
 
         div { class: "teleop-container",
-            div { class: "header-row",
-                div { class: "header",
-                    p { class: "header-text", "Teleop Scouting" }
+            div { class: "header-section",
+                div { class: "main-header",
+                    h1 { class: "title", "Teleop" }
                 }
 
-                div { class: "nav-buttons",
-                    Link { class: "nav-button", to: "/pages/auton",
-                        "Auton"
+                div { class: "navigation",
+                    Link { class: "nav-btn prev", to: "/pages/auton",
+                        i { class: "arrow left" }
+                        span { "Auton" }
                     }
                 }
             }
 
+            div { class: "content-area",
+                if local_teleop_data.read().is_empty() {
+                    div { class: "empty-state",
+                        i { class: "icon data" }
+                        p { "No teleop data categories configured" }
+                    }
+                } else {
+                    div { class: "counters-column",
+                        for (category, items) in local_teleop_data.read().iter() {
+                            div { class: "category-section",
+                                div { class: "category-header",
+                                    h2 { class: "category-title", "{category}" }
+                                }
+                                div { class: "counters-list",
+                                    {items.iter().map(|(item, value)| {
+                                        let item_clone = item.clone();
+                                        let category_clone = category.clone();
+                                        let initial_count = value.as_i64().unwrap_or(0) as i32;
 
-
-            if local_teleop_data.read().is_empty() {
-                div { class: "empty-state",
-                    "No teleop data categories configured"
-                }
-            } else {
-                for (category, items) in local_teleop_data.read().iter() {
-                    div { class: "counters-section",
-                        div { class: "subheader",
-                            p { class: "subheader-text", "{category}" }
-                        }
-                        div {
-                            {items.iter().map(|(item, value)| {
-                                let item_clone = item.clone();
-                                let category_clone = category.clone();
-                                let initial_count = value.as_i64().unwrap_or(0) as i32;
-
-                                rsx! {
-                                    div { class: "counter-item",
-                                        Counter {
-                                            count: use_signal(|| initial_count),
-                                            title: item.clone(),
-                                            on_change: move |new_count| {
-                                                local_teleop_data.with_mut(|data| {
-                                                    if let Some(category_data) = data.get_mut(&category_clone) {
-                                                        if let Some(value) = category_data.get_mut(&item_clone) {
-                                                            *value = Value::Number(Number::from(new_count));
-                                                        }
+                                        rsx! {
+                                            div { class: "counter-item",
+                                                Counter {
+                                                    count: use_signal(|| initial_count),
+                                                    title: item.clone(),
+                                                    on_change: move |new_count| {
+                                                        local_teleop_data.with_mut(|data| {
+                                                            if let Some(category_data) = data.get_mut(&category_clone) {
+                                                                if let Some(value) = category_data.get_mut(&item_clone) {
+                                                                    *value = Value::Number(Number::from(new_count));
+                                                                }
+                                                            }
+                                                        });
                                                     }
-                                                });
+                                                }
                                             }
                                         }
-                                    }
+                                    })}
                                 }
-                            })}
+                            }
                         }
                     }
                 }
             }
 
-            div { class: "submit-section",
+            div { class: "action-bar",
                 button {
-                    class: "submit-button",
+                    class: "submit-btn primary",
                     onclick: move |_| {
                         GLOBAL_DATA.with_mut(|global_data| {
                             let local_data = local_teleop_data.read();
@@ -95,19 +99,21 @@ pub fn Teleop() -> Element {
 
                         is_submitted.set(true);
                     },
-                    "Submit Teleop Data"
+                    i { class: "icon check" }
+                    span { "Submit Teleop Data" }
                 }
+
                 if is_submitted.read().to_owned() {
-                    Link {class: "btn-enabled", to: "/pages/postmatch",
-                        p { class: "button-text",
-                            "Postmatch"
-                        }
+                    Link { class: "nav-btn next enabled", to: "/pages/postmatch",
+                        span { "Postmatch" }
+                        i { class: "arrow right" }
                     }
                 } else {
                     button {
-                        class: "btn-disabled",
+                        class: "nav-btn next disabled",
                         disabled: true,
-                        "Postmatch"
+                        span { "Postmatch" }
+                        i { class: "arrow right" }
                     }
                 }
             }
