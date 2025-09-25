@@ -58,19 +58,25 @@ pub fn Prematch() -> Element {
                         class: "subtitle-block",
                         onclick: move |_| {
                             let current_data = off_data();
+                
+                            let mut new_data = GLOBAL_DATA();
 
-                            GLOBAL_DATA.lock().unwrap().add(
+                            new_data.add(
                                 "prematch",
                                 "Match Info",
                                 "team_number",
                                 Value::String(current_data.get("prematch", "Match Info", "team_number").unwrap_or_default().to_string()),
                             );
-                            GLOBAL_DATA.lock().unwrap().add(
+
+                            new_data.add(
                                 "prematch",
                                 "Match Info",
                                 "match_number",
                                 Value::String(current_data.get("prematch", "Match Info", "match_number").unwrap_or_default().to_string()),
                             );
+                
+                            *GLOBAL_DATA.write() = new_data;
+
                         },
                         "Submit Data"
                     }
