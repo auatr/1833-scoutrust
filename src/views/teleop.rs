@@ -1,9 +1,7 @@
 use crate::components::Counter;
-use crate::config::data::{self, GLOBAL_DATA};
+use crate::config::data::GLOBAL_DATA;
 use dioxus::prelude::*;
 use serde_json::{Number, Value};
-use std::collections::HashMap;
-
 const TELEOP_CSS: Asset = asset!("/assets/styling/teleop.css");
 
 #[component]
@@ -11,16 +9,27 @@ pub fn Teleop() -> Element {
     let teleop_data =
         GLOBAL_DATA.with(|data| data.get_phase_data("teleop").cloned().unwrap_or_default());
 
-    // Create local state by cloning the global teleop data
     let mut local_teleop_data = use_signal(|| teleop_data.clone());
+
+    let mut is_submitted = use_signal(|| false);
 
     rsx! {
         document::Link { rel: "stylesheet", href: TELEOP_CSS }
 
-        div { class: "container",
-            div { class: "header",
-                p { class: "title", "Teleop Scouting" }
+        div { class: "teleop-container",
+            div { class: "header-row",
+                div { class: "header",
+                    p { class: "header-text", "Teleop Scouting" }
+                }
+
+                div { class: "nav-buttons",
+                    Link { class: "nav-button", to: "/pages/auton",
+                        "Auton"
+                    }
+                }
             }
+
+
 
             if local_teleop_data.read().is_empty() {
                 div { class: "empty-state",
@@ -29,8 +38,10 @@ pub fn Teleop() -> Element {
             } else {
                 for (category, items) in local_teleop_data.read().iter() {
                     div { class: "counters-section",
-                        h2 { "{category}" }
-                        div { class: "counter-grid",
+                        div { class: "subheader",
+                            p { class: "subheader-text", "{category}" }
+                        }
+                        div {
                             {items.iter().map(|(item, value)| {
                                 let item_clone = item.clone();
                                 let category_clone = category.clone();
@@ -63,11 +74,6 @@ pub fn Teleop() -> Element {
                 button {
                     class: "submit-button",
                     onclick: move |_| {
-                        // print local data for debugging
-                        println!("Local Teleop Data: {:?}", local_teleop_data.read());
-
-
-                        // Update global data with local data
                         GLOBAL_DATA.with_mut(|global_data| {
                             let local_data = local_teleop_data.read();
                             for (category, items) in local_data.iter() {
@@ -86,8 +92,23 @@ pub fn Teleop() -> Element {
                         GLOBAL_DATA.with(|data| {
                             data.print_phase("teleop");
                         });
+
+                        is_submitted.set(true);
                     },
                     "Submit Teleop Data"
+                }
+                if is_submitted.read().to_owned() {
+                    Link {class: "btn-enabled", to: "/pages/postmatch",
+                        p { class: "button-text",
+                            "Postmatch"
+                        }
+                    }
+                } else {
+                    button {
+                        class: "btn-disabled",
+                        disabled: true,
+                        "Postmatch"
+                    }
                 }
             }
         }

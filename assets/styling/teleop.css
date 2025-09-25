@@ -1,60 +1,140 @@
 .teleop-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: "Chewy", sans-serif;
   background-color: #1b97ad;
+  padding: 20px;
   min-height: 100vh;
-  color: white;
 }
 
-.teleop-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.teleop-title {
-  font-size: 3rem;
-  font-weight: bold;
-}
-
-.teleop-subtitle {
-  font-size: 1.2rem;
-  opacity: 0.9;
-}
-
-.counters-section {
+.header-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   margin-bottom: 20px;
 }
 
-.counter-item {
+.header {
+  background-color: #f34732;
+  border-radius: 25px;
   display: flex;
   align-items: center;
-  background-color: #ffffff;
-  color: #000;
   justify-content: center;
-  flex-shrink: 0;
+  padding: 0 40px;
+  height: 100px;
+}
+
+.header-text {
+  font-size: 40px;
+  color: #ffffff;
+  text-align: center;
+  font-family: "Arial Rounded MT Bold", "Arial", sans-serif;
+  font-weight: bold;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.nav-button {
+  font-size: 40px;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-weight: bold;
+  white-space: nowrap;
+  align-self: center;
+}
+
+.scroll-content {
+  flex-grow: 1;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.subheader {
+  min-width: 125px;
+  max-width: 150px;
+  height: 75px;
+  background-color: #f34732;
+  border-radius: 25px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subheader-text {
+  font-size: 40px;
+  color: #ffffff;
+  text-align: center;
+  font-family: sans-serif;
+  font-weight: bold;
+  margin: 0;
+}
+
+.counter-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.postgame-button {
+  font-size: 30px;
+}
+
+.button-text {
+  font-family: sans-serif;
+  color: #ffffff;
+  text-align: center;
+  margin: 0;
 }
 
 .submit-section {
-  text-align: center;
-  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .submit-button {
-  background-color: #4ade80;
-  border: none;
-  border-radius: 15px;
-  padding: 10px 30px;
-  font-size: 1.2rem;
-  font-weight: bold;
+  width: 20%;
+  padding: 15px;
+  background-color: #f34732;
   color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 24px;
+  font-family: sans-serif;
+  align-self: center;
   cursor: pointer;
 }
 
 .submit-button:hover {
-  background-color: #22c55e;
-  transform: translateY(-2px);
+  background-color: #f78b76;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #ffffff;
+  font-style: italic;
+  font-size: 24px;
+}
+
+.btn-enabled {
+  text-align: center;
+  font-size: 1rem;
+  font-family: sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-disabled {
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.6;
+}
+.center {
+  align-self: center;
 }
