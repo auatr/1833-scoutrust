@@ -2,7 +2,7 @@ use crate::components::Counter;
 use crate::config::data::GLOBAL_DATA;
 use dioxus::prelude::*;
 use serde_json::{Number, Value};
-const AUTON_CSS: Asset = asset!("/assets/styling/auton.css");
+const AUTON_CSS: Asset = asset!("/assets/styling/match.css");
 
 #[component]
 pub fn Auton() -> Element {
@@ -16,7 +16,7 @@ pub fn Auton() -> Element {
     rsx! {
         document::Link { rel: "stylesheet", href: AUTON_CSS }
 
-        div { class: "teleop-container",
+        div { class: "match-container auton-container",
             div { class: "header-section",
                 div { class: "main-header",
                     h1 { class: "title", "Auton" }

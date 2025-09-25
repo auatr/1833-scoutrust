@@ -2,7 +2,7 @@ use crate::components::Counter;
 use crate::config::data::GLOBAL_DATA;
 use dioxus::prelude::*;
 use serde_json::{Number, Value};
-const TELEOP_CSS: Asset = asset!("/assets/styling/teleop.css");
+const TELEOP_CSS: Asset = asset!("/assets/styling/match.css");
 
 #[component]
 pub fn Teleop() -> Element {
@@ -16,7 +16,7 @@ pub fn Teleop() -> Element {
     rsx! {
         document::Link { rel: "stylesheet", href: TELEOP_CSS }
 
-        div { class: "teleop-container",
+        div { class: "match-container teleop-container",
             div { class: "header-section",
                 div { class: "main-header",
                     h1 { class: "title", "Teleop" }
