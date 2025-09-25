@@ -1,5 +1,4 @@
 .container {
-  display: flex;
   flex-direction: row;
   align-items: center;
   margin-bottom: 10px;
@@ -10,8 +9,9 @@
   height: 75px;
   display: flex;
   align-items: center;
+  text-align: center;
   justify-content: center;
-  background-color: #F34732;
+  background-color: #f34732;
   border-radius: 25px;
   margin-left: 30px;
   margin-right: 10px;
@@ -19,13 +19,12 @@
 
 .label-text {
   font-size: 40px;
-  color: #FFFFFF;
-  text-align: center;
+  color: #ffffff;
   font-family: "Chewy", cursive;
 }
 
-.control-button {
-  background-color: #FFFFFF;
+.control-btn {
+  background-color: #ffffff;
   width: 50px;
   height: 75px;
   display: flex;
@@ -43,7 +42,7 @@
 }
 
 .counter {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   width: 75px;
   height: 75px;
   border-radius: 25px;
