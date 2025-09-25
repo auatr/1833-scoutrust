@@ -115,7 +115,7 @@ impl Data {
         }
     }
 
-    fn get_phase_data(&self, phase: &str) -> Option<&HashMap<String, HashMap<String, Value>>> {
+    pub fn get_phase_data(&self, phase: &str) -> Option<&HashMap<String, HashMap<String, Value>>> {
         match phase {
             "prematch" => Some(&self.prematch),
             "auton" => Some(&self.auton),

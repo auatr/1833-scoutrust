@@ -9,7 +9,7 @@ pub fn Home() -> Element {
 
         div { class: "container",
             div { class: "sub-container",
-                Link { class: "button", to: "/pages/pre",
+                Link { class: "button", to: "/pages/prematch",
                     "START SCOUTING"
                 }
             }
