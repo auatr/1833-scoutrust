@@ -1,8 +1,8 @@
 use dioxus::signals::{GlobalSignal, Signal};
+use indexmap::IndexMap;
 use serde::de::DeserializeOwned;
 use serde::Deserialize;
-use serde_json::{Number, Value};
-use std::collections::HashMap;
+use serde_json::{Number, Value}; // Replace HashMap with IndexMap
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -22,26 +22,28 @@ pub struct ConfigEntry {
 
 #[derive(Debug, Clone)]
 pub struct Data {
-    prematch: HashMap<String, HashMap<String, Value>>,
-    auton: HashMap<String, HashMap<String, Value>>,
-    teleop: HashMap<String, HashMap<String, Value>>,
-    postmatch: HashMap<String, HashMap<String, Value>>,
+    prematch: IndexMap<String, IndexMap<String, Value>>, // Changed to IndexMap
+    auton: IndexMap<String, IndexMap<String, Value>>,    // Changed to IndexMap
+    teleop: IndexMap<String, IndexMap<String, Value>>,   // Changed to IndexMap
+    postmatch: IndexMap<String, IndexMap<String, Value>>, // Changed to IndexMap
 }
 
 impl Data {
     fn new() -> Self {
         Self {
-            prematch: HashMap::new(),
-            auton: HashMap::new(),
-            teleop: HashMap::new(),
-            postmatch: HashMap::new(),
+            prematch: IndexMap::new(),
+            auton: IndexMap::new(),
+            teleop: IndexMap::new(),
+            postmatch: IndexMap::new(),
         }
     }
 
     fn initialize(&mut self, config: &[ConfigEntry], phase: &str) {
         let phase_map = self.get_phase_data_mut(phase);
+
+        // Remove the reverse iteration since IndexMap preserves order
         for entry in config {
-            let mut entry_map = HashMap::new();
+            let mut entry_map = IndexMap::new(); // Changed to IndexMap
             for item in &entry.items {
                 let value = match entry.entry_type.to_lowercase().as_str() {
                     "number" | "integer" => Value::Number(Number::from(0)),
@@ -49,7 +51,6 @@ impl Data {
                     "string" | "input" => Value::String(String::new()),
                     _ => Value::Null,
                 };
-
                 entry_map.insert(item.key.clone(), value);
             }
             phase_map.insert(entry.title.clone(), entry_map);
@@ -115,7 +116,10 @@ impl Data {
         }
     }
 
-    pub fn get_phase_data(&self, phase: &str) -> Option<&HashMap<String, HashMap<String, Value>>> {
+    pub fn get_phase_data(
+        &self,
+        phase: &str,
+    ) -> Option<&IndexMap<String, IndexMap<String, Value>>> {
         match phase {
             "prematch" => Some(&self.prematch),
             "auton" => Some(&self.auton),
@@ -125,7 +129,10 @@ impl Data {
         }
     }
 
-    fn get_phase_data_mut(&mut self, phase: &str) -> &mut HashMap<String, HashMap<String, Value>> {
+    fn get_phase_data_mut(
+        &mut self,
+        phase: &str,
+    ) -> &mut IndexMap<String, IndexMap<String, Value>> {
         match phase {
             "prematch" => &mut self.prematch,
             "auton" => &mut self.auton,
@@ -136,6 +143,7 @@ impl Data {
     }
 }
 
+// The rest of your code remains the same...
 pub fn load_config<T: DeserializeOwned>(file_name: &str) -> T {
     let raw = match file_name {
         "prematchConfig.json" => include_str!("../../assets/config/prematchConfig.json"),

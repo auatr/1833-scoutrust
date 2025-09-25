@@ -3924,6 +3924,7 @@ version = "0.1.0"
 dependencies = [
  "dioxus",
  "firebase-rs",
+ "indexmap",
  "once_cell",
  "serde",
  "serde_json",

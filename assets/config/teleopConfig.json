@@ -17,5 +17,17 @@
       { "title": "Proc", "key": "Proc" },
       { "title": "Reef", "key": "Reef" }
     ]
+  },
+
+  {
+    "title": "Endgame",
+    "type": "Mixed",
+    "items": [
+      { "title": "Park", "key": "Park", "type": "Boolean" },
+      { "title": "Shallow", "key": "Shallow", "type": "Boolean" },
+      { "title": "Deep", "key": "Deep", "type": "Boolean" },
+      { "title": "Fail", "key": "Fail", "type": "Boolean" },
+      { "title": "Start", "key": "Start", "type": "Input" }
+    ]
   }
 ]
