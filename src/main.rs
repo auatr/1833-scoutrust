@@ -5,6 +5,7 @@ use views::{Home, Prematch};
 mod components;
 mod config;
 mod views;
+mod backend;
 
 #[derive(Debug, Clone, Routable, PartialEq)]
 #[rustfmt::skip]
