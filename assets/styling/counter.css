@@ -1,7 +1,18 @@
 .container {
+  background-color: #1b97ad;
+  display: flex;
   flex-direction: row;
+  justify-content: center;
+  font-family: "Chewy", cursive, sans-serif;
+  padding: 20px;
+  height: auto;
+}
+
+.inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .label {
