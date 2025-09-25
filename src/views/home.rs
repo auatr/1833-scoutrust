@@ -1,7 +1,5 @@
 use dioxus::prelude::*;
 
-use crate::components::Counter;
-
 const HOME_CSS: Asset = asset!("/assets/styling/home.css");
 
 #[component]
