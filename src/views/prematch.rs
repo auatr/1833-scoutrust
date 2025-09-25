@@ -78,24 +78,20 @@ pub fn Prematch() -> Element {
                         let current_data = off_data();
 
                         if let Some(team_value) = current_data.get("prematch", "Match Info", "TN") {
-                            GLOBAL_DATA.lock().unwrap().add(
-                                "prematch",
-                                "Match Info",
-                                "TN",
-                                team_value.clone(),
-                            );
+                            GLOBAL_DATA.with_mut(|data| {
+                                data.add("prematch", "Match Info", "TN", team_value.clone());
+                            });
                         }
 
                         if let Some(match_value) = current_data.get("prematch", "Match Info", "MN") {
-                            GLOBAL_DATA.lock().unwrap().add(
-                                "prematch",
-                                "Match Info",
-                                "MN",
-                                match_value.clone(),
-                            );
+                            GLOBAL_DATA.with_mut(|data| {
+                                data.add("prematch", "Match Info", "MN", match_value.clone());
+                            });
                         }
 
-                        GLOBAL_DATA.lock().unwrap().print_phase("prematch");
+                        GLOBAL_DATA.with(|data| {
+                            data.print_phase("prematch");
+                        });
 
                         is_submitted.set(true);
                     },
