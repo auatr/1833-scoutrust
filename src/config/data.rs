@@ -8,11 +8,18 @@ use std::{collections::HashMap, fs};
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
+pub struct ConfigItem {
+    title: String,
+    key: String,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ConfigEntry {
     title: String,
     #[serde(rename = "type")]
     entry_type: String,
-    items: Vec<String>,
+    items: Vec<ConfigItem>,
 }
 
 #[derive(Debug, Clone)]
@@ -44,16 +51,17 @@ impl Data {
                     "string" | "input" => Value::String(String::new()),
                     _ => Value::Null,
                 };
-                entry_map.insert(item.clone(), value);
+
+                entry_map.insert(item.key.clone(), value);
             }
             phase_map.insert(entry.title.clone(), entry_map);
         }
     }
 
-    pub fn add(&mut self, phase: &str, title: &str, item: &str, value: Value) {
+    pub fn add(&mut self, phase: &str, title: &str, item_key: &str, value: Value) {
         let phase_map = self.get_phase_data_mut(phase);
         if let Some(entry_map) = phase_map.get_mut(title) {
-            entry_map.insert(item.to_string(), value);
+            entry_map.insert(item_key.to_string(), value);
         } else {
             panic!("Title '{}' not found in phase '{}'", title, phase);
         }
@@ -92,6 +100,20 @@ impl Data {
                     };
                 }
             }
+        }
+    }
+
+    pub fn print_phase(&self, phase: &str) {
+        if let Some(phase_map) = self.get_phase_data(phase) {
+            println!("Data for phase '{}':", phase);
+            for (title, entry_map) in phase_map {
+                println!("  Title: {}", title);
+                for (key, value) in entry_map {
+                    println!("    {}: {}", key, value);
+                }
+            }
+        } else {
+            println!("Phase '{}' not found.", phase);
         }
     }
 
