@@ -1,7 +1,7 @@
 use dioxus::signals::{Global, GlobalSignal, Signal};
 use once_cell::sync::Lazy;
 use serde::de::DeserializeOwned;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::{Number, Value};
 use std::sync::Mutex;
 use std::{collections::HashMap, fs};
@@ -15,7 +15,7 @@ pub struct ConfigEntry {
     items: Vec<String>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Data {
     prematch: HashMap<String, HashMap<String, Value>>,
     auton: HashMap<String, HashMap<String, Value>>,
