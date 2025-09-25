@@ -1,8 +1,9 @@
 @font-face {
   font-family: "Chewy";
-  src: url("../fonts/Chewy-Regular.ttf") format("truetype");
+  src: url("/assets/fonts/Chewy-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 .container {
@@ -12,6 +13,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  font-family: "Chewy", cursive, sans-serif;
 }
 
 .sub-container {
@@ -32,7 +34,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-family: "Chewy", sans-serif;
+  font-family: "Chewy";
   font-size: 50px;
   color: white;
   text-decoration: none;
