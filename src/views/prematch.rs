@@ -101,7 +101,7 @@ pub fn Prematch() -> Element {
                 if is_form_valid && is_submitted.read().to_owned() {
                     Link {
                         class: "btn-secondary",
-                        to: "/pages/teleop",
+                        to: "/pages/auton",
                         "Auton"
                     }
                 } else {

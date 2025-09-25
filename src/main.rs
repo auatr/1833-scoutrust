@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use views::{Home, Prematch, Teleop};
+use views::{Auton, Home, Prematch, Teleop};
 
 mod components;
 mod config;
@@ -14,6 +14,9 @@ enum Route {
 
     #[route("/pages/prematch")]
     Prematch,
+    
+    #[route("/pages/auton")]
+    Auton,
 
     #[route("/pages/teleop")]
     Teleop,
