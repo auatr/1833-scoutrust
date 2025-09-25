@@ -1,0 +1,60 @@
+.teleop-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Chewy", sans-serif;
+  background-color: #1b97ad;
+  min-height: 100vh;
+  color: white;
+}
+
+.teleop-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.teleop-title {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.teleop-subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.counters-section {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.counter-item {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  color: #000;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.submit-section {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.submit-button {
+  background-color: #4ade80;
+  border: none;
+  border-radius: 15px;
+  padding: 10px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #22c55e;
+  transform: translateY(-2px);
+}

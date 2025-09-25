@@ -8,17 +8,19 @@ pub fn Counter(count: Signal<i32>, title: String) -> Element {
         document::Link { rel: "stylesheet", href: COUNTER_CSS }
 
         div { class: "container",
-            div { class: "label",
-                p { class: "labelText", "{title}" }
-            }
-            button { class: "control-btn", onclick: move |_| count -= 1,
-                span { class: "control-text", "-" }
-            }
-            div { class: "counter",
-                p { class: "counter-text", "{count()}" }
-            }
-            button { class: "control-btn", onclick: move |_| count += 1,
-                span { class: "control-text", "+" }
+            div { class: "inner",
+                div { class: "label",
+                    p { class: "labelText", "{title}" }
+                }
+                button { class: "control-btn", onclick: move |_| count -= 1,
+                    span { class: "control-text", "-" }
+                }
+                div { class: "counter",
+                    p { class: "counter-text", "{count()}" }
+                }
+                button { class: "control-btn", onclick: move |_| count += 1,
+                    span { class: "control-text", "+" }
+                }
             }
         }
     }
