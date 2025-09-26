@@ -1,8 +1,6 @@
 use dioxus::prelude::*;
 
-use crate::components::Toggle;
-
-const HOME_CSS: Asset = asset!("/assets/styling/home.css");
+const HOME_CSS: Asset = asset!("/assets/styling/views/home.css");
 
 #[component]
 pub fn Home() -> Element {

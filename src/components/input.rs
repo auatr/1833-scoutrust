@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-const TEXT_INPUT_CSS: Asset = asset!("/assets/styling/input.css");
+const TEXT_INPUT_CSS: Asset = asset!("/assets/styling/components/input.css");
 
 #[component]
 

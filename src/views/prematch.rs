@@ -2,7 +2,7 @@ use crate::config::data::{self, GLOBAL_DATA};
 use dioxus::prelude::*;
 use serde_json::Value;
 
-const PREMATCH_CSS: Asset = asset!("/assets/styling/prematch.css");
+const PREMATCH_CSS: Asset = asset!("/assets/styling/views/prematch.css");
 
 #[component]
 pub fn Prematch() -> Element {
