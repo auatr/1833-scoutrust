@@ -71,23 +71,6 @@
   cursor: not-allowed;
 }
 
-/* Alternative styling for different sizes */
-.toggle-switch.small {
-  width: 40px;
-  height: 24px;
-}
-
-.toggle-switch.small .toggle-slider:before {
-  height: 16px;
-  width: 16px;
-  left: 4px;
-  bottom: 4px;
-}
-
-.toggle-switch.small .toggle-input:checked + .toggle-slider:before {
-  transform: translateX(16px);
-}
-
 .toggle-switch.large {
   width: 80px;
   height: 44px;
