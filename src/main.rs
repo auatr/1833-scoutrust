@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use views::{Auton, Home, Postmatch, Prematch, Teleop};
+use views::{Auton, Confirmation, Home, Postmatch, Prematch, Teleop};
 
 mod components;
 mod config;
@@ -23,6 +23,9 @@ enum Route {
 
     #[route("/pages/postmatch")]
     Postmatch,
+
+    #[route("/pages/confirmation")]
+    Confirmation,
 }
 
 const FAVICON: Asset = asset!("/assets/images/BEAN.png");
