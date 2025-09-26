@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-const TOGGLE_CSS: Asset = asset!("/assets/styling/toggle.css");
+const TOGGLE_CSS: Asset = asset!("/assets/styling/components/toggle.css");
 
 #[component]
 pub fn Toggle(

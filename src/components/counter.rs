@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-const COUNTER_CSS: Asset = asset!("/assets/styling/counter.css");
+const COUNTER_CSS: Asset = asset!("/assets/styling/components/counter.css");
 
 #[component]
 pub fn Counter(count: Signal<i32>, title: String, on_change: Option<EventHandler<i32>>) -> Element {

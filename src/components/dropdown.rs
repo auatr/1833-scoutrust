@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-const DROPDOWN_CSS: Asset = asset!("/assets/styling/dropdown.css");
+const DROPDOWN_CSS: Asset = asset!("/assets/styling/components/dropdown.css");
 
 #[component]
 pub fn Dropdown(

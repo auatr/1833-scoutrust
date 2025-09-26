@@ -1,8 +1,9 @@
 use crate::components::Module;
 use crate::config::data::{GLOBAL_DATA, TELEOP_CONFIG};
 use dioxus::prelude::*;
-use serde_json::{Number, Value};
-const TELEOP_CSS: Asset = asset!("/assets/styling/match.css");
+use serde_json::Value;
+
+const TELEOP_CSS: Asset = asset!("/assets/styling/views/match.css");
 
 #[component]
 pub fn Teleop() -> Element {

@@ -2,9 +2,9 @@
   {
     "title": "Checks",
     "items": [
-      { "title": "Encountered Defense", "key": "ED", "type": "text-input" },
-      { "title": "Played Defense", "key": "PD", "type": "text-input" },
-      { "title": "Incapacitated", "key": "IC", "type": "text-input" }
+      { "title": "Encountered Defense", "key": "ED", "type": "boolean" },
+      { "title": "Played Defense", "key": "PD", "type": "boolean" },
+      { "title": "Incapacitated", "key": "IC", "type": "boolean" }
     ]
   }
 ]
