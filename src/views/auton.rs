@@ -1,5 +1,5 @@
-use crate::components::Counter;
-use crate::config::data::GLOBAL_DATA;
+use crate::components::{Counter, Module, Toggle};
+use crate::config::data::{AUTON_CONFIG, GLOBAL_DATA};
 use dioxus::prelude::*;
 use serde_json::{Number, Value};
 const AUTON_CSS: Asset = asset!("/assets/styling/match.css");
@@ -10,8 +10,15 @@ pub fn Auton() -> Element {
         GLOBAL_DATA.with(|data| data.get_phase_data("auton").cloned().unwrap_or_default());
 
     let mut local_auton_data = use_signal(|| auton_data.clone());
-
     let mut is_submitted = use_signal(|| false);
+
+    let handle_input_change = move |(category, item, value): (String, String, Value)| {
+        local_auton_data.with_mut(|data| {
+            if let Some(category_data) = data.get_mut(&category) {
+                category_data.insert(item, value);
+            }
+        });
+    };
 
     rsx! {
         document::Link { rel: "stylesheet", href: AUTON_CSS }
@@ -52,29 +59,15 @@ pub fn Auton() -> Element {
                                     h2 { class: "category-title", "{category}" }
                                 }
                                 div { class: "counters-list",
-                                    {items.iter().map(|(item, value)| {
-                                        let item_clone = item.clone();
-                                        let category_clone = category.clone();
-                                        let initial_count = value.as_i64().unwrap_or(0) as i32;
-
-                                        rsx! {
-                                            div { class: "counter-item",
-                                                Counter {
-                                                    count: use_signal(|| initial_count),
-                                                    title: item.clone(),
-                                                    on_change: move |new_count| {
-                                                        local_auton_data.with_mut(|data| {
-                                                            if let Some(category_data) = data.get_mut(&category_clone) {
-                                                                if let Some(value) = category_data.get_mut(&item_clone) {
-                                                                    *value = Value::Number(Number::from(new_count));
-                                                                }
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                            }
+                                    for (item, value) in items.iter() {
+                                        Module {
+                                            category: category.clone(),
+                                            item: item.clone(),
+                                            value: value.clone(),
+                                            config_entries: AUTON_CONFIG.to_vec(),
+                                            on_change: handle_input_change,
                                         }
-                                    })}
+                                    }
                                 }
                             }
                         }
@@ -90,17 +83,24 @@ pub fn Auton() -> Element {
                             let local_data = local_auton_data.read();
                             for (category, items) in local_data.iter() {
                                 for (item, value) in items {
-                                    let count = value.as_i64().unwrap_or(0) as i32;
-                                    global_data.add("auton", category, item, Value::Number(Number::from(count)));
+                                     match value {
+                                        Value::Number(num) => {
+                                            global_data.add("auton", category, item, Value::Number(num.clone()));
+                                        }
+                                        Value::Bool(bool_val) => {
+                                            global_data.add("auton", category, item, Value::Bool(*bool_val));
+                                        }
+                                        Value::String(str_val) => {
+                                            global_data.add("auton", category, item, Value::String(str_val.clone()));
+                                        }
+                                        _ => {
+                                        }
+                                    }
                                 }
                             }
                         });
 
                         // Print the updated data
-                        GLOBAL_DATA.with(|data| {
-                            data.print_phase("prematch");
-                        });
-
                         GLOBAL_DATA.with(|data| {
                             data.print_phase("auton");
                         });

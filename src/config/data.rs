@@ -2,34 +2,35 @@ use dioxus::signals::{GlobalSignal, Signal};
 use indexmap::IndexMap;
 use serde::de::DeserializeOwned;
 use serde::Deserialize;
-use serde_json::{Number, Value}; // Replace HashMap with IndexMap
+use serde_json::{Number, Value};
+use std::sync::LazyLock;
 
-#[derive(Debug, Deserialize)]
+#[derive(Clone, PartialEq, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ConfigItem {
-    title: String,
-    key: String,
+    pub title: String,
+    pub key: String,
+    #[serde(rename = "type")]
+    pub item_type: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Clone, PartialEq, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ConfigEntry {
-    title: String,
-    #[serde(rename = "type")]
-    entry_type: String,
-    items: Vec<ConfigItem>,
+    pub title: String,
+    pub items: Vec<ConfigItem>,
 }
 
 #[derive(Debug, Clone)]
 pub struct Data {
-    prematch: IndexMap<String, IndexMap<String, Value>>, // Changed to IndexMap
-    auton: IndexMap<String, IndexMap<String, Value>>,    // Changed to IndexMap
-    teleop: IndexMap<String, IndexMap<String, Value>>,   // Changed to IndexMap
-    postmatch: IndexMap<String, IndexMap<String, Value>>, // Changed to IndexMap
+    pub prematch: IndexMap<String, IndexMap<String, Value>>,
+    pub auton: IndexMap<String, IndexMap<String, Value>>,
+    pub teleop: IndexMap<String, IndexMap<String, Value>>,
+    pub postmatch: IndexMap<String, IndexMap<String, Value>>,
 }
 
 impl Data {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             prematch: IndexMap::new(),
             auton: IndexMap::new(),
@@ -38,17 +39,16 @@ impl Data {
         }
     }
 
-    fn initialize(&mut self, config: &[ConfigEntry], phase: &str) {
+    pub fn initialize(&mut self, config: &[ConfigEntry], phase: &str) {
         let phase_map = self.get_phase_data_mut(phase);
 
-        // Remove the reverse iteration since IndexMap preserves order
         for entry in config {
-            let mut entry_map = IndexMap::new(); // Changed to IndexMap
+            let mut entry_map = IndexMap::new();
             for item in &entry.items {
-                let value = match entry.entry_type.to_lowercase().as_str() {
-                    "number" | "integer" => Value::Number(Number::from(0)),
+                let value = match item.item_type.to_lowercase().as_str() {
+                    "number" => Value::Number(Number::from(0)),
                     "boolean" => Value::Bool(false),
-                    "string" | "input" => Value::String(String::new()),
+                    "string" | "text-input" | "int-input" => Value::String(String::new()),
                     _ => Value::Null,
                 };
                 entry_map.insert(item.key.clone(), value);
@@ -80,6 +80,13 @@ impl Data {
         phase_map
             .get(title)
             .and_then(|entry_map| entry_map.get(item))
+    }
+
+    pub fn get_mut(&mut self, phase: &str, title: &str, item: &str) -> Option<&mut Value> {
+        let phase_map = self.get_phase_data_mut(phase);
+        phase_map
+            .get_mut(title)
+            .and_then(|entry_map| entry_map.get_mut(item))
     }
 
     pub fn reset(&mut self) {
@@ -129,7 +136,7 @@ impl Data {
         }
     }
 
-    fn get_phase_data_mut(
+    pub fn get_phase_data_mut(
         &mut self,
         phase: &str,
     ) -> &mut IndexMap<String, IndexMap<String, Value>> {
@@ -143,7 +150,6 @@ impl Data {
     }
 }
 
-// The rest of your code remains the same...
 pub fn load_config<T: DeserializeOwned>(file_name: &str) -> T {
     let raw = match file_name {
         "prematchConfig.json" => include_str!("../../assets/config/prematchConfig.json"),
@@ -159,18 +165,22 @@ pub fn load_config<T: DeserializeOwned>(file_name: &str) -> T {
 pub fn initialize_data() -> Data {
     let mut data = Data::new();
 
-    let prematch_config = load_config::<Vec<ConfigEntry>>("prematchConfig.json");
-    let auton_config = load_config::<Vec<ConfigEntry>>("autonConfig.json");
-    let teleop_config = load_config::<Vec<ConfigEntry>>("teleopConfig.json");
-    let postmatch_config = load_config::<Vec<ConfigEntry>>("postmatchConfig.json");
-
-    data.initialize(&prematch_config, "prematch");
-    data.initialize(&auton_config, "auton");
-    data.initialize(&teleop_config, "teleop");
-    data.initialize(&postmatch_config, "postmatch");
+    data.initialize(&PREMATCH_CONFIG.as_ref(), "prematch");
+    data.initialize(&AUTON_CONFIG.as_ref(), "auton");
+    data.initialize(&TELEOP_CONFIG.as_ref(), "teleop");
+    data.initialize(&POSTMATCH_CONFIG.as_ref(), "postmatch");
 
     data
 }
 
-// Global shared data
+// Global shared data - now public
+pub static PREMATCH_CONFIG: LazyLock<Vec<ConfigEntry>> =
+    LazyLock::new(|| load_config::<Vec<ConfigEntry>>("prematchConfig.json"));
+pub static AUTON_CONFIG: LazyLock<Vec<ConfigEntry>> =
+    LazyLock::new(|| load_config::<Vec<ConfigEntry>>("autonConfig.json"));
+pub static TELEOP_CONFIG: LazyLock<Vec<ConfigEntry>> =
+    LazyLock::new(|| load_config::<Vec<ConfigEntry>>("teleopConfig.json"));
+pub static POSTMATCH_CONFIG: LazyLock<Vec<ConfigEntry>> =
+    LazyLock::new(|| load_config::<Vec<ConfigEntry>>("postmatchConfig.json"));
+
 pub static GLOBAL_DATA: GlobalSignal<Data> = Signal::global(|| initialize_data());
