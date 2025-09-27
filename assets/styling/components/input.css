@@ -8,7 +8,6 @@
 }
 
 .input-label {
-  font-family: system-ui, sans-serif;
   font-size: 1rem;
   font-weight: 500;
   color: #333;
@@ -22,7 +21,6 @@
   border-radius: 0.5rem;
   background-color: white;
   transition: all 0.2s ease;
-  font-family: sans-serif;
   color: #000;
 }
 
