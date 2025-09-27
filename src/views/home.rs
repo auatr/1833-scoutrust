@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-const HOME_CSS: Asset = asset!("/assets/styling/home.css");
+const HOME_CSS: Asset = asset!("/assets/styling/views/home.css");
 
 #[component]
 pub fn Home() -> Element {
@@ -9,7 +9,7 @@ pub fn Home() -> Element {
 
         div { class: "container",
             div { class: "sub-container",
-                Link { class: "button", to: "/pages/pre",
+                Link { class: "button", to: "/pages/prematch",
                     "START SCOUTING"
                 }
             }

@@ -1,0 +1,68 @@
+.container {
+  background-color: #1b97ad;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 20px;
+  height: auto;
+}
+
+.inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.label {
+  width: 100px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background-color: #f34732;
+  border-radius: 25px;
+  margin-left: 30px;
+  margin-right: 10px;
+}
+
+.label-text {
+  font-size: 40px;
+  color: #ffffff;
+}
+
+.control-btn {
+  background-color: #ffffff;
+  width: 50px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+  text-align: center;
+}
+
+.control-text {
+  text-align: center;
+  font-size: 30px;
+  color: #000000;
+}
+
+.counter {
+  background-color: #ffffff;
+  width: 75px;
+  height: 75px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.counter-text {
+  font-size: 40px;
+  color: #000000;
+  text-align: center;
+}

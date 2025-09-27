@@ -1,31 +1,51 @@
-use dioxus::prelude::*;
-
 use crate::config::data::{self, GLOBAL_DATA};
+use dioxus::prelude::*;
 use serde_json::Value;
+
+const PREMATCH_CSS: Asset = asset!("/assets/styling/views/prematch.css");
 
 #[component]
 pub fn Prematch() -> Element {
     let mut off_data = use_signal(|| data::initialize_data());
-    
     let offdata_init = off_data.read().clone();
-    
-    let mut team_number = use_signal(|| offdata_init.get("prematch", "Match Info", "team_number").clone().unwrap_or_default().to_string());
-    let mut match_number = use_signal(|| offdata_init.get("prematch", "Match Info", "match_number").unwrap_or_default().clone().to_string());
+
+    let mut team_number = use_signal(|| {
+        offdata_init
+            .get("prematch", "Match Info", "TN")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_string()
+    });
+
+    let mut match_number = use_signal(|| {
+        offdata_init
+            .get("prematch", "Match Info", "MN")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_string()
+    });
+
+    let is_form_valid = !team_number.read().is_empty() && !match_number.read().is_empty();
+    let mut is_submitted = use_signal(|| false);
 
     rsx! {
-        div { class: "container",
-            div { class: "row-container",
-                div { class: "input-container",
-                    div { class: "subtitle-block",
-                        p { class: "subtitle-block-text", "TEAM" }
-                    }
+        document::Link { rel: "stylesheet", href: PREMATCH_CSS }
+
+        div { class: "prematch-container",
+            div { class: "prematch-header",
+                p { class: "prematch-subtitle", "Enter match information to begin" }
+            }
+
+            div { class: "input-group",
+                div { class: "input-field",
+                    label { class: "input-label", "Team Number" }
                     input {
-                        class: "input",
-                        value: "{team_number.read()}",
-                        placeholder: "Team Number",
+                        class: "input-text",
+                        value: "{team_number}",
+                        placeholder: "Enter team number",
                         oninput: move |evt| {
                             let mut new_data = off_data();
-                            new_data.add("prematch", "Match ID", "TN", Value::String(evt.value().clone()));
+                            new_data.add("prematch", "Match Info", "TN", Value::String(evt.value().clone()));
                             off_data.set(new_data);
                             team_number.set(evt.value().clone());
                         },
@@ -33,17 +53,15 @@ pub fn Prematch() -> Element {
                     }
                 }
 
-                div { class: "input-container",
-                    div { class: "subtitle-block",
-                        p { class: "subtitle-block-text", "MATCH" }
-                    }
+                div { class: "input-field",
+                    label { class: "input-label", "Match Number" }
                     input {
-                        class: "input",
-                        value: "{match_number.read()}",
-                        placeholder: "Match Number",
+                        class: "input-text",
+                        value: "{match_number}",
+                        placeholder: "Enter match number",
                         oninput: move |evt| {
                             let mut new_data = off_data();
-                            new_data.add("prematch", "Match Info", "match_number", Value::String(evt.value().clone()));
+                            new_data.add("prematch", "Match Info", "MN", Value::String(evt.value().clone()));
                             off_data.set(new_data);
                             match_number.set(evt.value().clone());
                         },
@@ -52,40 +70,52 @@ pub fn Prematch() -> Element {
                 }
             }
 
-            if !team_number.read().is_empty() && !match_number.read().is_empty() {
-                div { class: "button-container",
-                    button {
-                        class: "subtitle-block",
-                        onclick: move |_| {
-                            let current_data = off_data();
-                
-                            let mut new_data = GLOBAL_DATA();
+            div { class: "button-group",
+                button {
+                    class: if is_form_valid { "btn-primary" } else { "btn-primary btn-disabled" },
+                    disabled: !is_form_valid,
+                    onclick: move |_| {
+                        let current_data = off_data();
 
-                            new_data.add(
-                                "prematch",
-                                "Match Info",
-                                "team_number",
-                                Value::String(current_data.get("prematch", "Match Info", "team_number").unwrap_or_default().to_string()),
-                            );
+                        if let Some(team_value) = current_data.get("prematch", "Match Info", "TN") {
+                            GLOBAL_DATA.with_mut(|data| {
+                                data.add("prematch", "Match Info", "TN", team_value.clone());
+                            });
+                        }
 
-                            new_data.add(
-                                "prematch",
-                                "Match Info",
-                                "match_number",
-                                Value::String(current_data.get("prematch", "Match Info", "match_number").unwrap_or_default().to_string()),
-                            );
-                
-                            *GLOBAL_DATA.write() = new_data;
+                        if let Some(match_value) = current_data.get("prematch", "Match Info", "MN") {
+                            GLOBAL_DATA.with_mut(|data| {
+                                data.add("prematch", "Match Info", "MN", match_value.clone());
+                            });
+                        }
 
-                        },
-                        "Submit Data"
-                    }
+                        GLOBAL_DATA.with(|data| {
+                            data.print_phase("prematch");
+                        });
 
+                        is_submitted.set(true);
+                    },
+                    "Submit"
+                }
+
+                if is_form_valid && is_submitted.read().to_owned() {
                     Link {
-                        class: "subtitle-block",
+                        class: "btn-secondary",
                         to: "/pages/auton",
                         "Auton"
                     }
+                } else {
+                    button {
+                        class: "btn-secondary btn-disabled",
+                        disabled: true,
+                        "Auton"
+                    }
+                }
+            }
+
+            if is_form_valid {
+                div { class: "validation-message",
+                    "Ready To Start Match"
                 }
             }
         }

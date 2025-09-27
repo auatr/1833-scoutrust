@@ -1,10 +1,9 @@
 [
   {
     "title": "Match Info",
-    "type": "String",
     "items": [
-      { "title": "Team Number", "key": "TN" },
-      { "title": "Match Number", "key": "MN" }
+      { "title": "Team Number", "key": "TN", "type": "text-input" },
+      { "title": "Match Number", "key": "MN", "type": "text-input" }
     ]
   }
 ]

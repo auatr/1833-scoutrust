@@ -1,21 +1,30 @@
 [
   {
     "title": "Coral",
-    "type": "Integer",
     "items": [
-      { "title": "L1", "key": "L1" },
-      { "title": "L2", "key": "L2" },
-      { "title": "L3", "key": "L3" },
-      { "title": "L4", "key": "L4" }
+      { "title": "L1", "key": "L1", "type": "number" },
+      { "title": "L2", "key": "L2", "type": "number" },
+      { "title": "L3", "key": "L3", "type": "number" },
+      { "title": "L4", "key": "L4", "type": "number" }
     ]
   },
   {
     "title": "Algae",
-    "type": "Integer",
     "items": [
-      { "title": "Net", "key": "Net" },
-      { "title": "Proc", "key": "Proc" },
-      { "title": "Reef", "key": "Reef" }
+      { "title": "Net", "key": "Net", "type": "number" },
+      { "title": "Proc", "key": "Proc", "type": "number" },
+      { "title": "Reef", "key": "Reef", "type": "number" }
+    ]
+  },
+
+  {
+    "title": "Endgame",
+    "items": [
+      { "title": "Park", "key": "Park", "type": "boolean" },
+      { "title": "Shallow", "key": "Shallow", "type": "boolean" },
+      { "title": "Deep", "key": "Deep", "type": "boolean" },
+      { "title": "Fail", "key": "Fail", "type": "boolean" },
+      { "title": "Start", "key": "Start", "type": "int-input" }
     ]
   }
 ]

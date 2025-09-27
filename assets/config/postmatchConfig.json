@@ -1,11 +1,10 @@
 [
   {
     "title": "Checks",
-    "type": "Postgame",
     "items": [
-      { "title": "Encountered Defense", "key": "ED" },
-      { "title": "Played Defense", "key": "PD" },
-      { "title": "Incapacitated", "key": "IC" }
+      { "title": "Encountered Defense", "key": "ED", "type": "boolean" },
+      { "title": "Played Defense", "key": "PD", "type": "boolean" },
+      { "title": "Incapacitated", "key": "IC", "type": "boolean" }
     ]
   }
 ]
