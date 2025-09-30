@@ -193,7 +193,6 @@
   .border-collapse {
     border-collapse: collapse;
   }
-
   .transform {
     transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
   }
@@ -221,7 +220,6 @@
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
 }
-
 @property --tw-rotate-x {
   syntax: "*";
   inherits: false;
@@ -252,11 +250,6 @@
   inherits: false;
   initial-value: solid;
 }
-@layer properties {
-  @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
-    *, ::before, ::after, ::backdrop {
-      --tw-border-style: solid;
-      --tw-outline-style: solid;
 @property --tw-backdrop-blur {
   syntax: "*";
   inherits: false;
