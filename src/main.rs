@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-use views::{Auton, Confirmation, Home, Postmatch, Prematch, Teleop};
+use views::{Auton, Confirmation, Home, Postmatch, Prematch, Teleop, Qr};
 
 mod components;
 mod config;
