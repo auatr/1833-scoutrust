@@ -7,7 +7,6 @@
 }
 
 .dropdown-label {
-  font-family: system-ui, sans-serif;
   font-size: 1rem;
   font-weight: 500;
   color: #333;
@@ -21,12 +20,7 @@
   border-radius: 0.5rem;
   background-color: white;
   transition: all 0.2s ease;
-  font-family: system-ui, sans-serif;
   appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23666' d='m0 1 2 2 2-2z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 0.65rem;
   padding-right: 2.5rem;
   cursor: pointer;
 }
@@ -62,20 +56,12 @@
   color: #f44336;
   font-size: 0.875rem;
   margin: 0;
-  font-family: system-ui, sans-serif;
 }
 
 .dropdown-help-text {
   color: #666;
   font-size: 0.875rem;
   margin: 0;
-  font-family: system-ui, sans-serif;
-}
-
-/* Size variants */
-.dropdown-select.small {
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
 }
 
 .dropdown-select.large {
@@ -83,7 +69,6 @@
   font-size: 1.125rem;
 }
 
-/* Full width variant */
 .dropdown-select.full-width {
   width: 100%;
 }
