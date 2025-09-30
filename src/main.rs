@@ -23,6 +23,8 @@ enum Route {
     #[route("/pages/postmatch")]
     Postmatch,
 
+    #[route("/pages/qr")]
+    Qr,
     #[route("/pages/confirmation")]
     Confirmation,
 }

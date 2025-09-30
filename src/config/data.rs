@@ -123,6 +123,22 @@ impl Data {
         }
     }
 
+    pub fn convert_to_json(&self, phase: &str) -> Option<String> {
+        let phase_map = self.get_phase_data(phase)?;
+        serde_json::to_string_pretty(phase_map).ok()
+    }
+
+    pub fn convert_all_to_json(&self) -> String {
+        let all_data = IndexMap::from([
+            ("prematch".to_string(), &self.prematch),
+            ("auton".to_string(), &self.auton),
+            ("teleop".to_string(), &self.teleop),
+            ("postmatch".to_string(), &self.postmatch),
+        ]);
+
+        serde_json::to_string_pretty(&all_data).unwrap_or_else(|_| "{}".to_string())
+    }
+
     pub fn get_phase_data(
         &self,
         phase: &str,
