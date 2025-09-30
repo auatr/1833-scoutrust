@@ -1,4 +1,11 @@
 [application]
+name="ScoutingApp"
+
+
+[bundle]
+identifier = "com.teambean"
+publisher = "TeamBean"
+icon = ["assets/images/BEAN.png"]
 
 [web.app]
 
@@ -9,7 +16,7 @@ title = "scoutrust"
 [web.resource]
 
 # Additional CSS style files
-style = [ "./assets/pre.css" ]
+style = [  ]
 
 # Additional JavaScript files
 script = []

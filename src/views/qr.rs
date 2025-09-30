@@ -25,7 +25,7 @@ pub fn Qr() -> Element {
                         json_data: GLOBAL_DATA.with(|data| data.convert_all_to_json())
                    }
 
-                   Link { class: "qr-home-button", to: "/pages/home",
+                   Link { class: "qr-home-button", to: "/",
                         "Home"
                    }
               }
