@@ -6,7 +6,7 @@ const HOME_CSS: Asset = asset!("/assets/styling/views/home.css");
 
 #[component]
 pub fn Home() -> Element {
-    GLOBAL_DATA.with(|data| data.reset());
+    GLOBAL_DATA.with_mut(|data| data.reset());
     rsx! {
         document::Link { rel: "stylesheet", href: HOME_CSS }
 
