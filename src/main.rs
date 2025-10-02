@@ -4,6 +4,7 @@ use views::{Auton, Confirmation, Home, Postmatch, Prematch, Teleop, Qr};
 mod components;
 mod config;
 mod views;
+mod backend;
 
 #[derive(Debug, Clone, Routable, PartialEq)]
 #[rustfmt::skip]

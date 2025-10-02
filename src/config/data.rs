@@ -1,7 +1,7 @@
 use dioxus::signals::{GlobalSignal, Signal};
 use indexmap::IndexMap;
 use serde::de::DeserializeOwned;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::{Number, Value};
 use std::sync::LazyLock;
 
@@ -21,7 +21,7 @@ pub struct ConfigEntry {
     pub items: Vec<ConfigItem>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Data {
     pub prematch: IndexMap<String, IndexMap<String, Value>>,
     pub auton: IndexMap<String, IndexMap<String, Value>>,
